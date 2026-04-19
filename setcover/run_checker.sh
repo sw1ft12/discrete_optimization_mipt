@@ -14,11 +14,7 @@ echo "Run tests..."
 for test in "${TESTS[@]}"; do
     echo "Test: $test"
 
-    start=$(date +%s)
     cost=$(python3 $1 "data/${test}" | python3 checker.py "data/${test}")
-    end=$(date +%s)
-    runtime=$(echo "$end - $start" | bc)
-    echo "Total time: ${runtime} seconds"
 
     if [ $? -eq 0 ]; then
       echo "Test passed with total cost ${cost}"

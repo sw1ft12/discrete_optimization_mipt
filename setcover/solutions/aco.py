@@ -58,13 +58,14 @@ def aco(n, m, sets, costs, time_limit=90, ants=25, rho=0.98, alpha=2.0, beta=5.0
         for e in s:
             elem_to_sets[e].append(j)
 
-    greedy_cost, _ = greedy(n, m, sets, costs)
+    greedy_cost, greedy_sol = greedy(n, m, sets, costs)
 
     tau_max = 1.0 / ((1 - rho) * greedy_cost)
     tau_min =  tau_max / (2 * m)
 
     pheromone = [tau_max] * m
-    best_solution, best_cost = [], float('inf')
+
+    best_solution, best_cost = greedy_sol, greedy_cost
     start = time.time()
 
     def h(covered, col):
