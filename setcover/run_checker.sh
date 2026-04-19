@@ -1,9 +1,5 @@
 #!/bin/bash
 
-g++ -std=c++17 $1 -o solution
-
-g++ -std=c++17 checker.cpp -o checker
-
 TESTS=(
     "sc_157_0"
     "sc_330_0"
@@ -18,16 +14,19 @@ echo "Run tests..."
 for test in "${TESTS[@]}"; do
     echo "Test: $test"
 
-    totalCost=$(./solution < "data/${test}" | ./checker "data/${test}" --quiet)
+    start=$(date +%s)
+    cost=$(python3 $1 "data/${test}" | python3 checker.py "data/${test}")
+    end=$(date +%s)
+    runtime=$(echo "$end - $start" | bc)
+    echo "Total time: ${runtime} seconds"
+
     if [ $? -eq 0 ]; then
-      echo "Test passed with total cost ${totalCost}"
+      echo "Test passed with total cost ${cost}"
     else
-      echo "Test failed: ${totalCost}"
+      echo "Test failed: ${cost}"
     fi
 
     echo
 done
 
 echo "Done"
-
-rm checker solution
