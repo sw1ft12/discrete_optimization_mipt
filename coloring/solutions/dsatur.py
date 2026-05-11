@@ -1,3 +1,18 @@
+import sys
+
+
+def read_input(filename):
+    with open(filename) as f:
+        n, m = map(int, f.readline().split())
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v = map(int, f.readline().split())
+            graph[u].append(v)
+            graph[v].append(u)
+
+    return n, m, graph
+
+
 def dSatur(n, graph):
     color = [-1] * n
     saturation = [0] * n
@@ -49,16 +64,9 @@ def dSatur(n, graph):
 
 
 if __name__ == "__main__":
-    n, m = map(int, input().split())
-
-    graph = [[] for _ in range(n)]
-
-    for _ in range(m):
-        u, v = map(int, input().split())
-        graph[u].append(v)
-        graph[v].append(u)
-
+    filename = sys.argv[1]
+    n, m, graph = read_input(filename)
     colors_count, coloring = dSatur(n, graph)
-    print(colors_count)
 
-    print(*coloring, sep=' ')
+    print(colors_count)
+    print(*coloring)
