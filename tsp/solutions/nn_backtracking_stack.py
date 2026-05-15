@@ -30,15 +30,22 @@ def nn_backtracking(coords, m=10, k=3, max_depth=5):
     best_tour = None
     best_cost = float('inf')
 
-    def backtrack(tour, visited, depth):
-        nonlocal best_tour, best_cost
+    stack = []
+
+    for start in range(min(m, n)):
+        visited = [False] * n
+        visited[start] = True
+        stack.append((start, [start], visited, 0))
+
+    while stack:
+        current_node, tour, visited, depth = stack.pop()
 
         if len(tour) == n:
             cost = total_distance(tour, coords)
             if cost < best_cost:
                 best_cost = cost
                 best_tour = tour.copy()
-            return
+            continue
 
         last = tour[-1]
         closest_neighbours = []
@@ -49,36 +56,35 @@ def nn_backtracking(coords, m=10, k=3, max_depth=5):
         closest_neighbours.sort()
 
         if depth >= max_depth:
-            best = closest_neighbours[0][1]
-            tour.append(best)
-            visited[best] = True
-            backtrack(tour, visited, depth + 1)
-            visited[best] = False
-            tour.pop()
-            return
+            if closest_neighbours:
+                best = closest_neighbours[0][1]
+                new_visited = visited.copy()
+                new_visited[best] = True
+                stack.append((best, tour + [best], new_visited, depth + 1))
+            continue
 
         for d, i in closest_neighbours[:min(k, len(closest_neighbours))]:
-            tour.append(i)
-            visited[i] = True
-            backtrack(tour, visited, depth + 1)
-            visited[i] = False
-            tour.pop()
-
-    for start in range(min(m, n)):
-        tour = [start]
-        used = [False] * n
-        used[start] = True
-        backtrack(tour, used, 0)
+            new_visited = visited.copy()
+            new_visited[i] = True
+            stack.append((i, tour + [i], new_visited, depth + 1))
 
     return best_tour, best_cost
 
-def main():
-    n, coords = read_input(sys.argv[1])
-    tour, cost = nn_backtracking(coords)
-
-    print(cost)
-    print(*tour, sep=' ')
-
-
 if __name__ == "__main__":
-    main()
+    n, coords = read_input(sys.argv[1])
+
+    tour, cost = [], float("inf")
+
+    if n < 60:
+        tour, cost = nn_backtracking(coords, 10, 5, 7)
+    elif n < 150:
+        tour, cost = nn_backtracking(coords,10, 5, 5)
+    elif n < 500:
+        tour, cost = nn_backtracking(coords, 10, 3, 5)
+    elif n < 5000:
+        tour, cost = nn_backtracking(coords, 5, 5, 2)
+    else:
+        tour, cost = nn_backtracking(coords, 1, 1, 1)
+
+    print(int(cost))
+    print(*tour)

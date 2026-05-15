@@ -31,7 +31,7 @@ def main():
     output_lines = sys.stdin.read().strip().split('\n')
 
     if len(output_lines) < 2:
-        print("ERROR: Invalid output format", file=sys.stderr)
+        print("ERROR: Time limit", file=sys.stderr)
         sys.exit(1)
 
     try:
@@ -59,12 +59,13 @@ def main():
         print("ERROR: Index out of range", file=sys.stderr)
         sys.exit(1)
 
-    actual_cost = total_distance(tour, coords)
+    actual_cost = math.ceil(total_distance(tour, coords))
 
-    if abs(actual_cost - reported_cost) > 0.01:
-        print(f"WARNING: Cost mismatch: reported={reported_cost:.2f}, actual={actual_cost:.2f}", file=sys.stderr)
+    if abs(actual_cost - reported_cost) > 1:
+        print(f"ERROR: Cost mismatch: reported={reported_cost:.2f}, actual={actual_cost:.2f}", file=sys.stderr)
+        sys.exit(1)
 
-    print(f"{actual_cost:.2f}")
+    print(actual_cost)
 
     sys.exit(0)
 
