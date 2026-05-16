@@ -1,6 +1,5 @@
 import math
 import sys
-import numpy as np
 
 def read_input(filename):
     with open(filename, 'r') as f:
@@ -86,7 +85,7 @@ def check_solution(N, M, stores, customers, solution):
     if abs(total_cost - solution.cost) > 1e9:
         return False, 0, f'cost {solution.cost} is not equal expected cost {total_cost}'
 
-    return True, total_cost, None
+    return True, solution.cost, None
 
 
 def main():
@@ -97,7 +96,7 @@ def main():
         print(err)
         sys.exit(1)
 
-    print(cost)
+    print(int(cost))
 
 
 if __name__ == "__main__":

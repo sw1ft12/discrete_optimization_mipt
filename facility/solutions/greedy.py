@@ -60,6 +60,8 @@ if __name__ == "__main__":
     filename = sys.argv[1]
     N, M, stores, customers = read_input(filename)
     cost, opened, assignments = greedy(N, M, stores, customers)
-    print(f"{cost:.0f}")
+    print(int(cost))
     print(*opened)
     print(*assignments)
+
+
