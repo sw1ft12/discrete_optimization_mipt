@@ -39,7 +39,7 @@
 | vrp_200_16_1   |   3847   |   0   |
 | vrp_421_41_1   |   4212   |   0   |
 
-### 2. Randomized bin packing + aco
+### 3. Randomized bin packing + aco
 Попытка к предыдущему решению внести случайность в распределение по курьерам
 
 Файл: randomized_bp_aco.py
